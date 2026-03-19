@@ -1,0 +1,126 @@
+
+# ============================================================
+# PLCVS System Configuration
+# ============================================================
+
+server:
+  host: "127.0.0.1"
+  port: 8765
+  debug: false
+  log_level: "INFO"
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:5173"
+    - "http://127.0.0.1:3000"
+
+paths:
+  config_dir: "../config"
+  models_dir: "../models"
+  data_dir: "../data"
+  log_dir: "../data/logs"
+  sessions_dir: "../data/sessions"
+  audio_recordings_dir: "../data/audio_recordings"
+
+audio:
+  device_index: null          # null = system default
+  sample_rate: 16000
+  channels: 1
+  chunk_size: 1024
+  format: "int16"
+  max_segment_duration: 30    # seconds
+  min_segment_duration: 0.5   # seconds
+  silence_threshold: 0.5      # seconds of silence to split segments
+  recording_enabled: true     # save raw audio files
+  max_recording_duration_hours: 8
+
+vad:
+  enabled: true
+  model: "silero"
+  threshold: 0.5
+  min_speech_duration_ms: 250
+  max_speech_duration_s: 30
+  min_silence_duration_ms: 600
+  speech_pad_ms: 200
+
+
+half_duplex:
+  turn_gap_threshold_s: 1.5    # Silence gap to detect speaker turn change
+  question_max_duration_s: 10  # Maximum expected question duration
+  response_max_duration_s: 15  # Maximum expected response duration
+  min_turn_duration_s: 0.5     # Minimum valid turn duration
+  questioner_callsigns:
+    - "programmer"
+    - "controller"
+    - "director"
+    - "launch director"
+    - "test director"
+
+stt:
+  model_size: "large-v3-turbo"
+  device: "auto"              # auto | cuda | cpu
+  compute_type: "float16"     # float16 | int8 | int8_float16
+  language: "en"
+  beam_size: 5
+  best_of: 5
+  temperature: 0.0
+  vad_filter: true
+  word_timestamps: true
+  max_processing_time: 3.0    # seconds — alert if exceeded
+  condition_on_previous: true
+  cpu_threads: 4
+  num_workers: 1
+
+
+nlp:
+  semantic_model: "sentence-transformers/all-MiniLM-L6-v2"
+  semantic_model_path: "models/sentence-transformers/all-MiniLM-L6-v2"
+  spacy_model: "en_core_web_trf"
+  confidence_threshold: 0.65
+  high_confidence_threshold: 0.80
+  use_llm_fallback: false     # Enable Llama for ambiguous cases
+  llm_model_path: "../models/llama-3.1-8b-q4/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf"
+  ambiguity_threshold: 0.50    # Below this = no match
+  device: "cpu"
+
+
+rules:
+  enforce_order: true
+  enforce_dependencies: true
+  inactivity_timeout: 120     # seconds
+  auto_halt_on_failure: true
+  enforce_item_order: true
+  halt_on_failure: true
+  low_confidence_review: true
+  low_confidence_threshold: 0.70
+
+
+session:
+  auto_save_interval: 30      # seconds
+  auto_save_interval_s: 30
+  max_session_duration: 28800  # 8 hours in seconds
+  max_session_duration_hours: 12
+  sessions_dir: "data/sessions"
+  report_format: "pdf"        # pdf | json | both
+
+ui:
+  refresh_rate_ms: 100
+  show_confidence_scores: true
+  show_waveform: false
+  theme: "dark"
+
+# ── UI / API Settings ──
+api:
+  websocket_ping_interval: 30
+
+# ── Database Settings ──
+database:
+  path: "data/plcvs.db"
+  echo: false
+
+# ── Report Settings ──
+report:
+  output_dir: "data/sessions"
+  format: "pdf"  # pdf | json | both
+  include_audio_references: true
+  include_transcriptions: true
+

@@ -1,0 +1,41 @@
+# ═══════════════════════════════════════════════════════════
+# PLCVS — Docker Compose
+# ═══════════════════════════════════════════════════════════
+
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: plcvs-backend
+    ports:
+      - "8765:8765"
+    volumes:
+      # Mount models (pre-downloaded on host)
+      - ../models:/app/models:ro
+      # Mount config
+      - ../config:/app/config:ro
+      # Persist session data
+      - plcvs-data:/app/data
+      # Audio device access (Linux)
+      # - /dev/snd:/dev/snd
+    environment:
+      - PLCVS_CONFIG_PATH=/app/config/system_config.yaml
+      - PLCVS_CHECKLIST_PATH=/app/config/checklist_config.yaml
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    network_mode: host   # For audio device access
+
+volumes:
+  plcvs-data:
+    driver: local
+

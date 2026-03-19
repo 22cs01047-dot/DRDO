@@ -1,0 +1,478 @@
+# ============================================================
+# PLCVS Mission Checklist Configuration
+# ============================================================
+# This file defines all stages, checklist items, dependencies,
+# keywords, and expected responses for a mission.
+# ============================================================
+
+mission:
+  id: "MISSION_2024_001"
+  name: "Test Flight - Agni Series"
+  version: "1.0"
+  description: "Pre-launch checklist for test missile launch"
+  created_by: "Launch Director"
+  created_date: "2024-01-15"
+
+stages:
+  # ── STAGE 1: Propulsion System ──
+  - id: "STG_01"
+    name: "Propulsion System Check"
+    order: 1
+    dependency: null
+    type: "STRICT"
+    description: "Verify all propulsion subsystems"
+    checklist_items:
+      - id: "CI_001"
+        name: "Fuel Pressure Verification"
+        keywords:
+          - "fuel pressure"
+          - "fuel tank pressure"
+          - "propellant pressure"
+          - "fuel system pressure"
+        expected_responses:
+          positive:
+            - "nominal"
+            - "confirmed"
+            - "within range"
+            - "affirmative"
+            - "pressure okay"
+            - "fuel pressure nominal"
+          negative:
+            - "negative"
+            - "out of range"
+            - "failed"
+            - "pressure low"
+            - "not ready"
+            - "abort"
+        mandatory: true
+        order_in_stage: 1
+
+      - id: "CI_002"
+        name: "Oxidizer Level Check"
+        keywords:
+          - "oxidizer level"
+          - "oxidizer tank"
+          - "LOX level"
+          - "liquid oxygen level"
+          - "oxidizer status"
+        expected_responses:
+          positive:
+            - "full"
+            - "confirmed"
+            - "level okay"
+            - "nominal"
+            - "within limits"
+          negative:
+            - "low"
+            - "insufficient"
+            - "not ready"
+            - "below minimum"
+        mandatory: true
+        order_in_stage: 2
+
+      - id: "CI_003"
+        name: "Propellant Feed System"
+        keywords:
+          - "feed system"
+          - "propellant feed"
+          - "fuel feed"
+          - "feed line"
+          - "propellant supply"
+        expected_responses:
+          positive:
+            - "operational"
+            - "confirmed"
+            - "feed system go"
+            - "nominal"
+          negative:
+            - "malfunction"
+            - "blockage"
+            - "not operational"
+            - "feed error"
+        mandatory: true
+        order_in_stage: 3
+
+      - id: "CI_004"
+        name: "Igniter Status"
+        keywords:
+          - "igniter"
+          - "ignition system"
+          - "igniter status"
+          - "pyrotechnic igniter"
+        expected_responses:
+          positive:
+            - "armed"
+            - "ready"
+            - "confirmed"
+            - "igniter go"
+          negative:
+            - "not armed"
+            - "failed"
+            - "igniter fault"
+        mandatory: true
+        order_in_stage: 4
+
+  # ── STAGE 2: Guidance & Navigation ──
+  - id: "STG_02"
+    name: "Guidance and Navigation System"
+    order: 2
+    dependency: "STG_01"
+    type: "STRICT"
+    description: "Verify guidance, navigation, and control systems"
+    checklist_items:
+      - id: "CI_005"
+        name: "INS Alignment"
+        keywords:
+          - "inertial navigation"
+          - "INS alignment"
+          - "navigation system"
+          - "inertial system"
+          - "INS status"
+        expected_responses:
+          positive:
+            - "aligned"
+            - "calibrated"
+            - "confirmed"
+            - "INS go"
+            - "alignment complete"
+          negative:
+            - "misaligned"
+            - "error"
+            - "not aligned"
+            - "drift detected"
+        mandatory: true
+        order_in_stage: 1
+
+      - id: "CI_006"
+        name: "Gyroscope Calibration"
+        keywords:
+          - "gyroscope"
+          - "gyro calibration"
+          - "gyro status"
+          - "rate gyro"
+        expected_responses:
+          positive:
+            - "calibrated"
+            - "confirmed"
+            - "within tolerance"
+            - "gyro nominal"
+          negative:
+            - "drift"
+            - "uncalibrated"
+            - "gyro error"
+            - "out of tolerance"
+        mandatory: true
+        order_in_stage: 2
+
+      - id: "CI_007"
+        name: "Accelerometer Check"
+        keywords:
+          - "accelerometer"
+          - "accelerometer reading"
+          - "acceleration sensor"
+        expected_responses:
+          positive:
+            - "nominal"
+            - "confirmed"
+            - "reading okay"
+          negative:
+            - "error"
+            - "faulty"
+            - "reading abnormal"
+        mandatory: true
+        order_in_stage: 3
+
+      - id: "CI_008"
+        name: "Flight Computer Status"
+        keywords:
+          - "flight computer"
+          - "onboard computer"
+          - "mission computer"
+          - "computer status"
+        expected_responses:
+          positive:
+            - "operational"
+            - "confirmed"
+            - "loaded"
+            - "software verified"
+          negative:
+            - "fault"
+            - "error"
+            - "not responding"
+            - "software error"
+        mandatory: true
+        order_in_stage: 4
+
+  # ── STAGE 3: Telemetry & Communication ──
+  - id: "STG_03"
+    name: "Telemetry and Communication"
+    order: 3
+    dependency: "STG_01"
+    type: "SOFT"
+    description: "Verify telemetry links and communication systems"
+    checklist_items:
+      - id: "CI_009"
+        name: "Telemetry Link"
+        keywords:
+          - "telemetry link"
+          - "telemetry"
+          - "TM link"
+          - "data link"
+          - "telemetry status"
+        expected_responses:
+          positive:
+            - "established"
+            - "confirmed"
+            - "link up"
+            - "receiving data"
+            - "telemetry go"
+          negative:
+            - "no link"
+            - "lost"
+            - "disconnected"
+            - "signal weak"
+        mandatory: true
+        order_in_stage: 1
+
+      - id: "CI_010"
+        name: "Radar Tracking"
+        keywords:
+          - "radar tracking"
+          - "radar lock"
+          - "tracking radar"
+          - "radar status"
+        expected_responses:
+          positive:
+            - "tracking"
+            - "locked"
+            - "confirmed"
+            - "radar go"
+          negative:
+            - "no track"
+            - "lost lock"
+            - "radar fault"
+        mandatory: true
+        order_in_stage: 2
+
+      - id: "CI_011"
+        name: "Command Destruct System"
+        keywords:
+          - "command destruct"
+          - "flight termination"
+          - "FTS"
+          - "destruct system"
+          - "range safety"
+        expected_responses:
+          positive:
+            - "armed"
+            - "ready"
+            - "confirmed"
+            - "FTS go"
+          negative:
+            - "not armed"
+            - "fault"
+            - "FTS error"
+        mandatory: true
+        order_in_stage: 3
+
+  # ── STAGE 4: Electrical & Power ──
+  - id: "STG_04"
+    name: "Electrical and Power Systems"
+    order: 4
+    dependency: null
+    type: "PARALLEL"
+    description: "Verify electrical power and battery systems"
+    checklist_items:
+      - id: "CI_012"
+        name: "Battery Voltage"
+        keywords:
+          - "battery voltage"
+          - "battery status"
+          - "power supply"
+          - "battery level"
+        expected_responses:
+          positive:
+            - "nominal"
+            - "confirmed"
+            - "voltage okay"
+            - "fully charged"
+          negative:
+            - "low voltage"
+            - "battery fault"
+            - "power failure"
+        mandatory: true
+        order_in_stage: 1
+
+      - id: "CI_013"
+        name: "Umbilical Connection"
+        keywords:
+          - "umbilical"
+          - "umbilical connection"
+          - "ground power"
+          - "umbilical status"
+        expected_responses:
+          positive:
+            - "connected"
+            - "confirmed"
+            - "power flowing"
+          negative:
+            - "disconnected"
+            - "fault"
+            - "no power"
+        mandatory: true
+        order_in_stage: 2
+
+      - id: "CI_014"
+        name: "Onboard Power Switchover"
+        keywords:
+          - "power switchover"
+          - "internal power"
+          - "onboard power"
+          - "battery switchover"
+        expected_responses:
+          positive:
+            - "complete"
+            - "confirmed"
+            - "on internal power"
+            - "switchover nominal"
+          negative:
+            - "failed"
+            - "switchover error"
+            - "still on external"
+        mandatory: true
+        order_in_stage: 3
+
+  # ── STAGE 5: Final Countdown ──
+  - id: "STG_05"
+    name: "Final Countdown Sequence"
+    order: 5
+    dependency: "STG_02"
+    type: "STRICT"
+    description: "Final go/no-go and countdown procedures"
+    checklist_items:
+      - id: "CI_015"
+        name: "Range Clear Confirmation"
+        keywords:
+          - "range clear"
+          - "range safety clear"
+          - "sea range clear"
+          - "air space clear"
+          - "range clearance"
+        expected_responses:
+          positive:
+            - "clear"
+            - "confirmed"
+            - "range clear"
+            - "all clear"
+          negative:
+            - "not clear"
+            - "vessel detected"
+            - "aircraft in range"
+            - "hold"
+        mandatory: true
+        order_in_stage: 1
+
+      - id: "CI_016"
+        name: "Weather Clearance"
+        keywords:
+          - "weather"
+          - "weather clearance"
+          - "meteorological"
+          - "wind speed"
+          - "weather status"
+        expected_responses:
+          positive:
+            - "clear"
+            - "favorable"
+            - "within limits"
+            - "weather go"
+          negative:
+            - "unfavorable"
+            - "wind exceeds"
+            - "weather hold"
+            - "not clear"
+        mandatory: true
+        order_in_stage: 2
+
+      - id: "CI_017"
+        name: "Go No-Go Poll"
+        keywords:
+          - "go no-go"
+          - "go no go"
+          - "final poll"
+          - "launch poll"
+          - "go poll"
+        expected_responses:
+          positive:
+            - "go"
+            - "go for launch"
+            - "all stations go"
+            - "affirmative go"
+          negative:
+            - "no go"
+            - "no-go"
+            - "hold"
+            - "abort"
+        mandatory: true
+        order_in_stage: 3
+
+      - id: "CI_018"
+        name: "Launch Authorization"
+        keywords:
+          - "launch authorization"
+          - "launch authority"
+          - "authorization code"
+          - "launch clearance"
+          - "launch command"
+        expected_responses:
+          positive:
+            - "authorized"
+            - "confirmed"
+            - "clearance granted"
+            - "launch authorized"
+          negative:
+            - "denied"
+            - "not authorized"
+            - "hold"
+            - "abort"
+        mandatory: true
+        order_in_stage: 4
+
+# ── RULES ──
+rules:
+  - id: "RULE_001"
+    description: "All mandatory items in a STRICT stage must be CONFIRMED before dependent stage can begin"
+    type: "STAGE_COMPLETION"
+    severity: "CRITICAL"
+
+  - id: "RULE_002"
+    description: "If any mandatory item is FAILED, raise CRITICAL alert and halt"
+    type: "FAILURE_HALT"
+    severity: "CRITICAL"
+
+  - id: "RULE_003"
+    description: "Items within a STRICT stage must follow order_in_stage sequence"
+    type: "ORDER_ENFORCEMENT"
+    severity: "WARNING"
+
+  - id: "RULE_004"
+    description: "PARALLEL stages can proceed independently but must complete before final stage"
+    type: "PARALLEL_COMPLETION"
+    severity: "WARNING"
+
+  - id: "RULE_005"
+    description: "All stages must be CONFIRMED before launch authorization"
+    type: "FINAL_GATE"
+    severity: "CRITICAL"
+
+  - id: "RULE_006"
+    description: "Flag any item with confidence below 0.65 for manual review"
+    type: "LOW_CONFIDENCE_FLAG"
+    severity: "WARNING"
+
+  - id: "RULE_007"
+    description: "Alert if no checklist activity for more than 120 seconds"
+    type: "INACTIVITY_ALERT"
+    severity: "WARNING"
+    params:
+      timeout_seconds: 120

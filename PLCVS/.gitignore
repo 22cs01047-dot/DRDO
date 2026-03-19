@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+venv/
+.env
+
+# VSCode
+.vscode/
+
+# Node
+node_modules/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data/Artifacts
+PLCVS/data/
+PLCVS/backend/data/
+PLCVS/frontend/dist/
+PLCVS/frontend/node_modules/
+PLCVS/frontend/.next/
+PLCVS/frontend/.turbo/
+PLCVS/frontend/.cache/
+PLCVS/frontend/.env*
+PLCVS/frontend/coverage/
+PLCVS/frontend/public/
+PLCVS/frontend/electron-dist/
+
+# Audio/Recordings
+PLCVS/data/audio_recordings/
+PLCVS/backend/data/audio_recordings/
+
+# Logs
+PLCVS/data/logs/
+PLCVS/backend/data/logs/
+
+# Sessions
+PLCVS/data/sessions/
+PLCVS/backend/data/sessions/
+
+# Misc
+*.sqlite3
+*.db
+*.bak
+*.swp
+*.tmp
+*.old
+
+# Test outputs
+PLCVS/backend/tests/__pycache__/
+PLCVS/backend/__pycache__/
+PLCVS/frontend/src/__pycache__/
+
+# Docker
+PLCVS/docker/*.pid
+PLCVS/docker/*.sock
+
+# Jupyter
+*.ipynb_checkpoints/
+
+# Ignore model weights
+PLCVS/models/
+PLCVS/backend/models/
+
+# Ignore scripts outputs
+PLCVS/scripts/*.log
+PLCVS/scripts/*.tmp
+
+# Ignore compiled Electron
+PLCVS/frontend/electron-dist/
+
+# Ignore system config
+PLCVS/config/system_config.yaml

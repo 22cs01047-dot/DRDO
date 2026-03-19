@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════
+   CSS Custom Properties — Theme Tokens
+   ═══════════════════════════════════════════════════════ */
+
+:root {
+  --color-surface:           #ffffff;
+  --color-surface-secondary: #f8fafc;
+  --color-surface-tertiary:  #f1f5f9;
+  --color-text-primary:   #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary:  #64748b;
+  --color-text-muted:     #94a3b8;
+  --color-border:       #e2e8f0;
+  --color-border-light: #f1f5f9;
+  --tunnel-track:             #e2e8f0;
+  --tunnel-track-opacity:     0.6;
+  --tunnel-gate-bg:           #ffffff;
+  --tunnel-dot-pending-fill:  #ffffff;
+  --tunnel-dot-pending-stroke:#cbd5e1;
+  --tunnel-overlay-bg:        #ffffff;
+  --tunnel-overlay-stroke:    #e2e8f0;
+  --tunnel-overlay-text:      #64748b;
+  --tunnel-cursor-bg:         #1e293b;
+  --tunnel-cursor-text:       #ffffff;
+  --tunnel-label-pending-bg:  #f1f5f9;
+  --tunnel-label-pending-str: #cbd5e1;
+  --tunnel-stat-chip-bg:      rgba(255, 255, 255, 0.6);
+  --tooltip-bg:        #0f172a;
+  --tooltip-text:      #ffffff;
+  --tooltip-secondary: #94a3b8;
+}
+
+.dark {
+  --color-surface:           #1e293b;
+  --color-surface-secondary: #0f172a;
+  --color-surface-tertiary:  #334155;
+  --color-text-primary:   #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-tertiary:  #94a3b8;
+  --color-text-muted:     #64748b;
+  --color-border:       #334155;
+  --color-border-light: #1e293b;
+  --tunnel-track:             #334155;
+  --tunnel-track-opacity:     0.5;
+  --tunnel-gate-bg:           #1e293b;
+  --tunnel-dot-pending-fill:  #1e293b;
+  --tunnel-dot-pending-stroke:#475569;
+  --tunnel-overlay-bg:        #1e293b;
+  --tunnel-overlay-stroke:    #334155;
+  --tunnel-overlay-text:      #94a3b8;
+  --tunnel-cursor-bg:         #e2e8f0;
+  --tunnel-cursor-text:       #0f172a;
+  --tunnel-label-pending-bg:  #334155;
+  --tunnel-label-pending-str: #475569;
+  --tunnel-stat-chip-bg:      rgba(255, 255, 255, 0.1);
+  --tooltip-bg:        #f1f5f9;
+  --tooltip-text:      #0f172a;
+  --tooltip-secondary: #475569;
+}
+
+/* ═══════════════════════════════════════════════════════
+   Base Layer
+   ═══════════════════════════════════════════════════════ */
+
+@layer base {
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  body {
+    @apply text-slate-900 dark:text-slate-100 antialiased;
+    background-color: var(--color-surface-secondary);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    /* Prevent text-size adjust on orientation change (iOS) */
+    -webkit-text-size-adjust: 100%;
+  }
+  *:focus-visible {
+    @apply outline-none ring-2 ring-slate-900/20 dark:ring-slate-400/30
+           ring-offset-2 ring-offset-white dark:ring-offset-slate-900;
+  }
+  *:focus:not(:focus-visible) {
+    @apply outline-none ring-0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Scrollbar — Webkit + Firefox
+   ═══════════════════════════════════════════════════════ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.dark * {
+  scrollbar-color: #475569 transparent;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+.scrollbar-on-hover::-webkit-scrollbar-thumb { background: transparent; }
+.scrollbar-on-hover:hover::-webkit-scrollbar-thumb { background: #cbd5e1; }
+.dark .scrollbar-on-hover:hover::-webkit-scrollbar-thumb { background: #475569; }
+
+/* ═══════════════════════════════════════════════════════
+   Utilities
+   ═══════════════════════════════════════════════════════ */
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Touch Targets — ensure minimum 44px tap area
+   ═══════════════════════════════════════════════════════ */
+
+@media (pointer: coarse) {
+  button,
+  [role="button"],
+  [role="tab"],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Exception: inline badges and very small controls */
+  [aria-label*="Acknowledge"],
+  .text-2xs button {
+    min-height: 32px;
+    min-width: 32px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Tunnel Progress
+   ═══════════════════════════════════════════════════════ */
+
+.tunnel-seg-hover { transition: fill 0.15s ease; }
+g:hover > .tunnel-seg-hover { fill: rgba(241, 245, 249, 0.7); }
+.dark g:hover > .tunnel-seg-hover { fill: rgba(51, 65, 85, 0.5); }
+
+.tunnel-paused-overlay {
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 8px,
+    rgba(245, 158, 11, 0.05) 8px, rgba(245, 158, 11, 0.05) 16px
+  );
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   State Theming
+   ═══════════════════════════════════════════════════════ */
+
+header { transition: border-color 0.3s ease, background-color 0.3s ease; }
+
+[data-state="PAUSED"]  { --state-accent: #d97706; }
+[data-state="COMPLETED"] { --state-accent: #059669; }
+[data-state="ABORTED"] { --state-accent: #dc2626; }
+[data-state="RUNNING"] { --state-accent: #059669; }
+[data-state="IDLE"]    { --state-accent: #94a3b8; }
+
+[data-state="PAUSED"]::after {
+  content: ""; position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  background: rgba(245, 158, 11, 0.015);
+}
+.dark [data-state="PAUSED"]::after { background: rgba(245, 158, 11, 0.04); }
+
+[data-state="ABORTED"]::after {
+  content: ""; position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  background: rgba(220, 38, 38, 0.015);
+}
+.dark [data-state="ABORTED"]::after { background: rgba(220, 38, 38, 0.04); }
+
+/* ═══════════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════════ */
+
+g[tabindex="0"]:focus-visible > .tunnel-focus-ring { stroke: #0f172a; stroke-width: 2; stroke-dasharray: none; }
+.dark g[tabindex="0"]:focus-visible > .tunnel-focus-ring { stroke: #e2e8f0; }
+g[tabindex="0"]:focus-visible > .tunnel-seg-hover { fill: rgba(241, 245, 249, 0.9); }
+.dark g[tabindex="0"]:focus-visible > .tunnel-seg-hover { fill: rgba(51, 65, 85, 0.6); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   Reduced Motion & High Contrast
+   ═══════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ping { animation: none !important; opacity: 0 !important; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+  svg animate { dur: 0.01s; }
+}
+
+@media (prefers-contrast: high) {
+  g[tabindex="0"]:focus-visible > .tunnel-focus-ring { stroke-width: 3; stroke: #000; }
+  .dark g[tabindex="0"]:focus-visible > .tunnel-focus-ring { stroke: #fff; }
+  circle { stroke-width: 2; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Print Styles — for SessionReport modal
+   ═══════════════════════════════════════════════════════ */
+
+@media print {
+  /* Force light mode for print */
+  * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  body { background: white !important; color: black !important; }
+
+  /* Hide everything except the report dialog */
+  body > div > *:not([role="dialog"]) { display: none !important; }
+
+  /* The backdrop and dialog container */
+  [role="dialog"] {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+
+  /* The report card itself */
+  [role="dialog"] > div {
+    max-height: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* No page break inside stage cards */
+  [data-stage] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Header / footer at each page */
+  @page {
+    margin: 1cm;
+    @top-center { content: "PLCVS Session Report"; }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Keyframes
+   ═══════════════════════════════════════════════════════ */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+
+
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0.8; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.25s ease-out;
+}

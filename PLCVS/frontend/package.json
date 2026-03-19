@@ -1,0 +1,51 @@
+{
+  "name": "plcvs-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PLCVS - Pre-Launch Checklist Verification System UI",
+  "main": "electron-dist/main.cjs",
+  "type": "module",
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@xyflow/react": "^12.6.0",
+    "clsx": "^2.1.0",
+    "d3": "^7.9.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^2.2.0",
+    "three": "^0.183.2",
+    "zustand": "^5.0.11"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "electron:compile": "node scripts/build-electron.mjs",
+    "electron:dev": "npm run electron:compile && concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run electron:compile && vite build && electron-builder",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/node": "^20.11.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.183.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "concurrently": "^8.2.2",
+    "electron": "^28.1.4",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.56.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12",
+    "wait-on": "^7.2.0"
+  }
+}
