@@ -78,7 +78,11 @@ class WhisperSTT:
             "negative, confirmed, abort, hold, resume, go no-go, "
             "ignition sequence, umbilical disconnect, "
             "launch pad, radar tracking, flight termination system."
+            "launch pad, radar tracking, flight termination system."
+            "programmer to, controller to, director to, aunch director to .."
         )
+    
+ 
 
     def load_model(self) -> None:
         """Load the Whisper model into memory"""

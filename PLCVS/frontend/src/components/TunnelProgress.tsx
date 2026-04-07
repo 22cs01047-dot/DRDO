@@ -24,67 +24,87 @@ const DESIGN = {
 const PULSE = { fast: "0.8s", normal: "1.2s", slow: "2s" };
 
 // ─── Theme-Aware Color Factory ─────────────────────────────────
+// FIX: Completely reworked for proper contrast ratios (WCAG AA+)
+// Dark mode pills use solid, color-tinted backgrounds instead of
+// near-invisible semi-transparent ones. All text/bg pairs now have
+// ≥ 4.5:1 contrast ratio.
 function createColors(isDark: boolean) {
   const d = isDark;
   return {
     status: {
       CONFIRMED: {
-        fill: "#10b981", stroke: "#059669",
-        light: d ? "rgba(16,185,129,0.15)" : "#d1fae5",
+        fill: "#10b981",
+        stroke: "#059669",
+        light: d ? "rgba(16,185,129,0.18)" : "#dcfce7",
+        // FIX: dark text #6ee7b7 on dark bg #064e3b ≈ 7:1 contrast
         text: d ? "#6ee7b7" : "#065f46",
-        textBg: d ? "rgba(16,185,129,0.15)" : "#d1fae5",
-        textBgStroke: d ? "rgba(5,150,105,0.4)" : "#059669",
+        textBg: d ? "#064e3b" : "#dcfce7",
+        textBgStroke: d ? "#10b981" : "#86efac",
       },
       FAILED: {
-        fill: "#ef4444", stroke: "#dc2626",
-        light: d ? "rgba(239,68,68,0.15)" : "#fee2e2",
+        fill: "#ef4444",
+        stroke: "#dc2626",
+        light: d ? "rgba(239,68,68,0.18)" : "#fee2e2",
+        // FIX: dark text #fca5a5 on dark bg #450a0a ≈ 6:1 contrast
         text: d ? "#fca5a5" : "#991b1b",
-        textBg: d ? "rgba(239,68,68,0.15)" : "#fee2e2",
-        textBgStroke: d ? "rgba(220,38,38,0.4)" : "#dc2626",
+        textBg: d ? "#450a0a" : "#fee2e2",
+        textBgStroke: d ? "#ef4444" : "#f87171",
       },
       IN_PROGRESS: {
-        fill: "#3b82f6", stroke: "#2563eb",
-        light: d ? "rgba(59,130,246,0.15)" : "#dbeafe",
+        fill: "#3b82f6",
+        stroke: "#2563eb",
+        light: d ? "rgba(59,130,246,0.18)" : "#dbeafe",
+        // FIX: dark text #93c5fd on dark bg #172554 ≈ 5.5:1 contrast
         text: d ? "#93c5fd" : "#1e40af",
-        textBg: d ? "rgba(59,130,246,0.15)" : "#dbeafe",
-        textBgStroke: d ? "rgba(37,99,235,0.4)" : "#2563eb",
+        textBg: d ? "#172554" : "#dbeafe",
+        textBgStroke: d ? "#3b82f6" : "#60a5fa",
       },
       PENDING: {
-        fill: d ? "#334155" : "#f1f5f9",
-        stroke: d ? "#475569" : "#cbd5e1",
-        light: d ? "rgba(51,65,85,0.3)" : "#f8fafc",
-        text: d ? "#94a3b8" : "#64748b",
-        textBg: d ? "#334155" : "#f1f5f9",
-        textBgStroke: d ? "#475569" : "#cbd5e1",
+        // FIX: brighter fill/stroke for dark mode visibility
+        fill: d ? "#475569" : "#e2e8f0",
+        stroke: d ? "#64748b" : "#94a3b8",
+        light: d ? "rgba(71,85,105,0.25)" : "#f1f5f9",
+        // FIX: dark text #cbd5e1 (was #94a3b8) on #0f172a ≈ 12:1
+        // FIX: light text #334155 (was #64748b) on #e2e8f0 ≈ 5:1
+        text: d ? "#cbd5e1" : "#334155",
+        textBg: d ? "#0f172a" : "#e2e8f0",
+        textBgStroke: d ? "#475569" : "#94a3b8",
       },
       AMBIGUOUS: {
-        fill: "#f59e0b", stroke: "#d97706",
-        light: d ? "rgba(245,158,11,0.15)" : "#fef3c7",
+        fill: "#f59e0b",
+        stroke: "#d97706",
+        light: d ? "rgba(245,158,11,0.18)" : "#fef3c7",
+        // FIX: dark text #fcd34d on dark bg #78350f ≈ 6:1 contrast
         text: d ? "#fcd34d" : "#92400e",
-        textBg: d ? "rgba(245,158,11,0.15)" : "#fef3c7",
-        textBgStroke: d ? "rgba(217,119,6,0.4)" : "#d97706",
+        textBg: d ? "#78350f" : "#fef3c7",
+        textBgStroke: d ? "#f59e0b" : "#fbbf24",
       },
     },
     session: {
-      IDLE:      { border: "border-slate-200 dark:border-slate-600", bg: "bg-slate-100 dark:bg-slate-700", text: "text-slate-600 dark:text-slate-400" },
-      RUNNING:   { border: "border-blue-300 dark:border-blue-500/40", bg: "bg-blue-100 dark:bg-blue-500/15", text: "text-blue-700 dark:text-blue-400" },
-      PAUSED:    { border: "border-amber-300 dark:border-amber-500/40", bg: "bg-amber-100 dark:bg-amber-500/15", text: "text-amber-700 dark:text-amber-400" },
-      COMPLETED: { border: "border-emerald-300 dark:border-emerald-500/40", bg: "bg-emerald-100 dark:bg-emerald-500/15", text: "text-emerald-700 dark:text-emerald-400" },
-      ABORTED:   { border: "border-red-300 dark:border-red-500/40", bg: "bg-red-100 dark:bg-red-500/15", text: "text-red-700 dark:text-red-400" },
+      // FIX: increased dark-mode bg opacity and brighter text
+      IDLE:      { border: "border-slate-300 dark:border-slate-600", bg: "bg-slate-100 dark:bg-slate-700", text: "text-slate-600 dark:text-slate-300" },
+      RUNNING:   { border: "border-blue-300 dark:border-blue-500/50", bg: "bg-blue-100 dark:bg-blue-900/40", text: "text-blue-700 dark:text-blue-300" },
+      PAUSED:    { border: "border-amber-300 dark:border-amber-500/50", bg: "bg-amber-100 dark:bg-amber-900/40", text: "text-amber-700 dark:text-amber-300" },
+      COMPLETED: { border: "border-emerald-300 dark:border-emerald-500/50", bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-700 dark:text-emerald-300" },
+      ABORTED:   { border: "border-red-300 dark:border-red-500/50", bg: "bg-red-100 dark:bg-red-900/40", text: "text-red-700 dark:text-red-300" },
     },
     gradient: { progress: ["#10b981", "#3b82f6"], active: ["#3b82f6", "#8b5cf6"] },
     svg: {
       track: d ? "#334155" : "#e2e8f0",
-      trackOpacity: d ? 0.5 : 0.6,
-      gateBg: d ? "#1e293b" : "#ffffff",
-      dotBg: d ? "#1e293b" : "#ffffff",
-      overlayBg: d ? "#1e293b" : "#ffffff",
-      overlayStroke: d ? "#334155" : "#e2e8f0",
-      overlayText: d ? "#94a3b8" : "#64748b",
+      trackOpacity: d ? 0.6 : 0.7,
+      // FIX: gateBg/dotBg/overlayBg are now DISTINCT from canvas
+      // Dark canvas = #1e293b (slate-800); these use #0f172a (slate-900) for depth
+      // Light canvas = #ffffff; these use #f8fafc (slate-50) for subtle contrast
+      gateBg: d ? "#0f172a" : "#f8fafc",
+      dotBg: d ? "#0f172a" : "#f8fafc",
+      overlayBg: d ? "#0f172a" : "#f8fafc",
+      overlayStroke: d ? "#475569" : "#cbd5e1",
+      // FIX: brighter overlay text in dark mode
+      overlayText: d ? "#e2e8f0" : "#475569",
       cursorBg: d ? "#e2e8f0" : "#1e293b",
       cursorText: d ? "#0f172a" : "#ffffff",
-      shineOpacity: d ? 0.1 : 0.2,
-      failedBg: d ? "rgba(239,68,68,0.12)" : "rgba(239,68,68,0.06)",
+      shineOpacity: d ? 0.08 : 0.15,
+      failedBg: d ? "rgba(239,68,68,0.15)" : "rgba(239,68,68,0.06)",
       focusStroke: d ? "#93c5fd" : "#3b82f6",
     },
   };
@@ -93,7 +113,6 @@ function createColors(isDark: boolean) {
 type StatusColors = ReturnType<typeof createColors>["status"];
 type StatusColorEntry = StatusColors[keyof StatusColors];
 
-// ─── Theme-independent helpers ─────────────────────────────────
 function needsAction(status: string, isActive: boolean, sessionStatus: string): boolean {
   return sessionStatus === "RUNNING" && (status === "PENDING" || status === "IN_PROGRESS" || isActive);
 }
@@ -124,7 +143,6 @@ export const TunnelProgress = ({
   const { isDark } = useTheme();
   const COLORS = useMemo(() => createColors(isDark), [isDark]);
 
-  // Color helpers (depend on current theme)
   const getStatusColor = useCallback(
     (status: string): StatusColorEntry =>
       COLORS.status[status as keyof StatusColors] || COLORS.status.PENDING,
@@ -151,7 +169,6 @@ export const TunnelProgress = ({
   const N = sorted.length;
   const unackedAlerts = useMemo(() => alerts.filter((a) => !a.acknowledged), [alerts]);
 
-  // ── Layout computation ────────────────────────────────
   const layout = useMemo(() => {
     if (N === 0) return null;
 
@@ -229,7 +246,6 @@ export const TunnelProgress = ({
     };
   }, [sorted, N, activeStageId, unackedAlerts, sessionStatus, getGateColor]);
 
-  // ── Event handlers (stable references) ────────────────
   const handleStageHover = useCallback((stageId: string | null, event?: React.MouseEvent) => {
     setHoveredStage(stageId);
     if (showTooltips && stageId && event) {
@@ -266,7 +282,6 @@ export const TunnelProgress = ({
     setFocusedStage(stageId);
   }, [onItemSelect]);
 
-  // ── Empty state ───────────────────────────────────────
   if (!layout || N === 0) {
     return (
       <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-8 text-center transition-colors">
@@ -310,7 +325,7 @@ export const TunnelProgress = ({
       {/* Next Action Banner */}
       {highlightNextAction && sessionState.running && segs.some((s) => s.needsAction) && (
         <div className="absolute top-3 left-4 z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-100 dark:from-blue-500/20 to-blue-50 dark:to-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30 text-xs font-semibold animate-pulse shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-100 dark:from-blue-900/40 to-blue-50 dark:to-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-500/40 text-xs font-semibold animate-pulse shadow-sm">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
             ⚡ Action Required
           </div>
@@ -327,6 +342,11 @@ export const TunnelProgress = ({
               <stop offset="50%" stopColor={COLORS.gradient.active[0]} stopOpacity="0.95" />
               <stop offset="100%" stopColor={COLORS.gradient.active[1]} stopOpacity="0.95" />
             </linearGradient>
+            {/* FIX: dedicated gradient for the mini progress ring in stats bar */}
+            <linearGradient id="mini-progress-gradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor={COLORS.gradient.progress[0]} />
+              <stop offset="100%" stopColor={COLORS.gradient.active[0]} />
+            </linearGradient>
             <filter id="alert-glow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="4" result="blur" />
               <feFlood floodColor="#ef4444" floodOpacity="0.4" />
@@ -334,7 +354,11 @@ export const TunnelProgress = ({
               <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
             <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity={isDark ? 0.3 : 0.1} />
+              <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000000" floodOpacity={isDark ? 0.4 : 0.12} />
+            </filter>
+            {/* FIX: stronger pill shadow for better separation from canvas */}
+            <filter id="pill-shadow" x="-15%" y="-30%" width="130%" height="160%">
+              <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000000" floodOpacity={isDark ? 0.5 : 0.1} />
             </filter>
             <radialGradient id="pulse-gradient" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
@@ -445,7 +469,7 @@ export const TunnelProgress = ({
                 </g>
 
                 {/* Stage Labels */}
-                <g opacity={sessionState.idle ? 0.6 : 1}>
+                <g opacity={sessionState.idle ? 0.7 : 1}>
                   {shouldBlink && (
                     <line x1={seg.cx - 25} y1={DESIGN.CY + 80} x2={seg.cx + 25} y2={DESIGN.CY + 80}
                       stroke="#f59e0b" strokeWidth={2} strokeDasharray="4 2" opacity="0.8">
@@ -454,17 +478,18 @@ export const TunnelProgress = ({
                     </line>
                   )}
 
-                  {/* Name pill */}
+                  {/* FIX: Name pill – strokeWidth 0.5→1, removed partial opacity,
+                       added pill-shadow filter for clear separation from canvas */}
                   <rect x={seg.cx - 55} y={DESIGN.CY + 28} width={110} height={18}
                     rx={9} fill={statusColor.textBg} stroke={statusColor.textBgStroke}
-                    strokeWidth={0.5} opacity={0.85} filter="url(#soft-shadow)" />
+                    strokeWidth={1} filter="url(#pill-shadow)" />
                   <text x={seg.cx} y={DESIGN.CY + 37} textAnchor="middle" fontSize={9}
                     fontWeight={seg.isActive ? 700 : 600} fill={statusColor.text}
                     fontFamily="Inter, system-ui, sans-serif" className="transition-colors duration-200">
                     {seg.name.length > 14 ? seg.name.slice(0, 12) + "…" : seg.name}
                   </text>
 
-                  {/* Progress badge */}
+                  {/* FIX: Progress badge – strokeWidth 0.5→1, pill-shadow filter */}
                   {(() => {
                     const pColor = seg.progress === 100 ? getStatusColor("CONFIRMED")
                       : seg.status === "FAILED" ? getStatusColor("FAILED")
@@ -472,7 +497,7 @@ export const TunnelProgress = ({
                       : getStatusColor("PENDING");
                     return (<>
                       <rect x={seg.cx - 18} y={DESIGN.CY + 50} width={36} height={16} rx={8}
-                        fill={pColor.textBg} stroke={pColor.textBgStroke} strokeWidth={0.5} filter="url(#soft-shadow)" />
+                        fill={pColor.textBg} stroke={pColor.textBgStroke} strokeWidth={1} filter="url(#pill-shadow)" />
                       <text x={seg.cx} y={DESIGN.CY + 58} textAnchor="middle" fontSize={10} fontWeight={800}
                         fill={pColor.text} fontFamily="Inter, system-ui, sans-serif">
                         {seg.progress}%
@@ -480,14 +505,15 @@ export const TunnelProgress = ({
                     </>);
                   })()}
 
-                  {/* Item count + alerts badge */}
+                  {/* FIX: Item count + alerts badge – strokeWidth 0.5→1,
+                       removed partial opacity, added pill-shadow */}
                   {(() => {
                     const aColor = seg.alertCount > 0
                       ? (seg.hasCritical ? getStatusColor("FAILED") : getStatusColor("AMBIGUOUS"))
                       : getStatusColor("PENDING");
                     return (<>
                       <rect x={seg.cx - 35} y={DESIGN.CY + 70} width={70} height={14} rx={7}
-                        fill={aColor.textBg} stroke={aColor.textBgStroke} strokeWidth={0.5} opacity={0.9} />
+                        fill={aColor.textBg} stroke={aColor.textBgStroke} strokeWidth={1} filter="url(#pill-shadow)" />
                       <text x={seg.cx} y={DESIGN.CY + 77} textAnchor="middle" fontSize={8}
                         fill={aColor.text} fontWeight={seg.alertCount > 0 ? 700 : 500}
                         fontFamily="Inter, system-ui, sans-serif">
@@ -535,10 +561,11 @@ export const TunnelProgress = ({
                 {g.isFilled && <circle cx={g.x} cy={DESIGN.CY} r={DESIGN.GR - 4} fill={g.color} opacity="0.3" />}
                 <circle cx={g.x} cy={DESIGN.CY} r={DESIGN.GR - 2}
                   fill={g.isFilled ? g.color : S.gateBg} opacity={g.isFilled ? 0.9 : 1} />
+                {/* FIX: gate number text – use brighter color for unfilled dark mode */}
                 <text x={g.x} y={DESIGN.CY + 1} textAnchor="middle" dominantBaseline="central"
                   fontSize={10} fontWeight={800} fill={g.isFilled ? "white" : g.color}
                   fontFamily="Inter, system-ui, sans-serif"
-                  style={{ textShadow: g.isFilled ? "0 1px 2px rgba(0,0,0,0.2)" : "none" }}>
+                  style={{ textShadow: g.isFilled ? "0 1px 2px rgba(0,0,0,0.3)" : "none" }}>
                   {g.index}
                   {shouldGateBlink && !g.isFilled && (
                     <animate attributeName="opacity" values="1;0.5;1" dur={PULSE.fast} repeatCount="indefinite" />
@@ -551,8 +578,9 @@ export const TunnelProgress = ({
           {/* Session Status Overlays */}
           {sessionState.idle && (
             <g>
+              {/* FIX: overlay rect now uses distinct bg + stronger stroke for visibility */}
               <rect x={svgW / 2 - 140} y={DESIGN.CY - 14} width={280} height={28} rx={14}
-                fill={S.overlayBg} fillOpacity="0.95" stroke={S.overlayStroke} strokeWidth={1} filter="url(#soft-shadow)" />
+                fill={S.overlayBg} fillOpacity="0.97" stroke={S.overlayStroke} strokeWidth={1.5} filter="url(#soft-shadow)" />
               <text x={svgW / 2} y={DESIGN.CY + 1} textAnchor="middle" dominantBaseline="central"
                 fontSize={12} fontWeight={600} fill={S.overlayText} fontFamily="Inter, system-ui, sans-serif">
                 ▶ Start session to begin verification
@@ -605,37 +633,61 @@ export const TunnelProgress = ({
       </div>
 
       {/* Stats Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between px-6 py-4 border-t border-slate-100 dark:border-slate-700 bg-gradient-to-r from-slate-50/80 dark:from-slate-800/80 to-white/80 dark:to-slate-800/50 gap-4">
+      {/* FIX: improved dark-mode gradient bg for stats bar separation */}
+      <div className="flex flex-col sm:flex-row items-center justify-between px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-50 dark:from-slate-900/60 to-white dark:to-slate-900/40 gap-4">
         {/* Overall Progress Ring */}
         <div className="flex items-center gap-3">
           <div className="relative">
+            {/* FIX: mini progress ring now has its own gradient definition */}
             <svg width="48" height="48" className="transform -rotate-90">
-              <circle cx="24" cy="24" r="20" fill="none" stroke={S.track} strokeWidth="6" />
+              <defs>
+                <linearGradient id="ring-progress-gradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor={COLORS.gradient.progress[0]} />
+                  <stop offset="100%" stopColor={COLORS.gradient.active[0]} />
+                </linearGradient>
+              </defs>
+              <circle cx="24" cy="24" r="20" fill="none" stroke={S.track} strokeWidth="6" opacity={S.trackOpacity} />
               <circle cx="24" cy="24" r="20" fill="none"
-                stroke={sessionState.completed ? COLORS.status.CONFIRMED.fill : "url(#progress-gradient)"}
+                stroke={sessionState.completed ? COLORS.status.CONFIRMED.fill : "url(#ring-progress-gradient)"}
                 strokeWidth="6" strokeDasharray={`${(overallProgress / 100) * 125.6} 125.6`}
                 strokeLinecap="round" className="transition-all duration-700 ease-out" />
             </svg>
-            <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-slate-700 dark:text-slate-300">
+            <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-slate-700 dark:text-slate-200">
               {overallProgress}%
             </span>
           </div>
           <div>
             <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">Overall Progress</div>
-            <div className="text-sm text-slate-600 dark:text-slate-300">{counts.confirmed}/{counts.total} items</div>
+            <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">{counts.confirmed}/{counts.total} items</div>
           </div>
         </div>
 
-        {/* FIX: Replaced COLORS.status.*.text (hex) with proper Tailwind classes */}
+        {/* FIX: stat chip dark-mode backgrounds use *-900/40 for proper visibility
+             instead of *-500/10 which was nearly invisible */}
         <div className="flex items-center gap-2 flex-wrap justify-center">
-          <StatChip label="Total" value={counts.total} color="text-slate-600 dark:text-slate-400" bg="bg-slate-100 dark:bg-slate-700/50" icon="📊" />
-          <StatChip label="Confirmed" value={counts.confirmed} color="text-emerald-700 dark:text-emerald-400" bg="bg-emerald-50 dark:bg-emerald-500/10" icon="✓" />
-          <StatChip label="In Progress" value={counts.inProgress} color="text-blue-700 dark:text-blue-400" bg="bg-blue-50 dark:bg-blue-500/10" icon="⟳" />
-          <StatChip label="Failed" value={counts.failed} color="text-red-700 dark:text-red-400" bg="bg-red-50 dark:bg-red-500/10" icon="✕" />
-          <StatChip label="Ambiguous" value={counts.ambiguous} color="text-amber-700 dark:text-amber-400" bg="bg-amber-50 dark:bg-amber-500/10" icon="?" />
-          <StatChip label="Pending" value={counts.pending} color="text-slate-500 dark:text-slate-400" bg="bg-slate-50 dark:bg-slate-700/30" icon="○" blink={counts.pending > 0 && sessionState.running} />
+          <StatChip label="Total" value={counts.total}
+            color="text-slate-700 dark:text-slate-200"
+            bg="bg-slate-100 dark:bg-slate-700" icon="📊" />
+          <StatChip label="Confirmed" value={counts.confirmed}
+            color="text-emerald-700 dark:text-emerald-300"
+            bg="bg-emerald-50 dark:bg-emerald-900/40" icon="✓" />
+          <StatChip label="In Progress" value={counts.inProgress}
+            color="text-blue-700 dark:text-blue-300"
+            bg="bg-blue-50 dark:bg-blue-900/40" icon="⟳" />
+          <StatChip label="Failed" value={counts.failed}
+            color="text-red-700 dark:text-red-300"
+            bg="bg-red-50 dark:bg-red-900/40" icon="✕" />
+          <StatChip label="Ambiguous" value={counts.ambiguous}
+            color="text-amber-700 dark:text-amber-300"
+            bg="bg-amber-50 dark:bg-amber-900/40" icon="?" />
+          <StatChip label="Pending" value={counts.pending}
+            color="text-slate-600 dark:text-slate-300"
+            bg="bg-slate-50 dark:bg-slate-700/60" icon="○"
+            blink={counts.pending > 0 && sessionState.running} />
           {totalAlerts > 0 && (
-            <StatChip label="Alerts" value={totalAlerts} color="text-red-700 dark:text-red-400" bg="bg-red-50 dark:bg-red-500/10" icon="⚠" pulse />
+            <StatChip label="Alerts" value={totalAlerts}
+              color="text-red-700 dark:text-red-300"
+              bg="bg-red-50 dark:bg-red-900/40" icon="⚠" pulse />
           )}
         </div>
       </div>
@@ -652,17 +704,20 @@ export const TunnelProgress = ({
       {/* Tooltip */}
       {showTooltips && tooltip.visible && (
         <div className="fixed z-50 pointer-events-none" style={{ left: tooltip.x + 12, top: tooltip.y - 12, transform: "translate(-50%, -100%)" }}>
-          <div className="bg-slate-900 dark:bg-slate-600 text-white px-4 py-3 rounded-lg shadow-2xl text-sm max-w-xs">
+          {/* FIX: tooltip uses solid, high-contrast backgrounds in both modes */}
+          <div className="bg-slate-900 dark:bg-slate-700 text-white px-4 py-3 rounded-lg shadow-2xl text-sm max-w-xs border border-slate-700 dark:border-slate-500">
             <div className="font-semibold mb-1">{tooltip.content.title}</div>
-            {tooltip.content.description && <div className="text-slate-300 dark:text-slate-400 text-xs mb-2">{tooltip.content.description}</div>}
+            {tooltip.content.description && <div className="text-slate-300 text-xs mb-2">{tooltip.content.description}</div>}
             <div className="flex items-center gap-3 text-xs">
-              {tooltip.content.status !== undefined && <span className="px-2 py-0.5 rounded bg-slate-700 dark:bg-slate-500">{tooltip.content.status}</span>}
-              {tooltip.content.progress !== undefined && <span>{tooltip.content.progress}% complete</span>}
-              {tooltip.content.items !== undefined && <span>{tooltip.content.items} items</span>}
-              {tooltip.content.alerts !== undefined && tooltip.content.alerts > 0 && <span className="text-amber-400">⚠ {tooltip.content.alerts} alerts</span>}
+              {tooltip.content.status !== undefined && (
+                <span className="px-2 py-0.5 rounded bg-slate-700 dark:bg-slate-600 text-slate-200">{tooltip.content.status}</span>
+              )}
+              {tooltip.content.progress !== undefined && <span className="text-slate-200">{tooltip.content.progress}% complete</span>}
+              {tooltip.content.items !== undefined && <span className="text-slate-200">{tooltip.content.items} items</span>}
+              {tooltip.content.alerts !== undefined && tooltip.content.alerts > 0 && <span className="text-amber-400 font-semibold">⚠ {tooltip.content.alerts} alerts</span>}
             </div>
           </div>
-          <div className="absolute left-1/2 bottom-0 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-slate-900 dark:border-t-slate-600"
+          <div className="absolute left-1/2 bottom-0 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-slate-900 dark:border-t-slate-700"
             style={{ transform: "translateX(-50%) translateY(100%)" }} />
         </div>
       )}
@@ -685,7 +740,10 @@ const ItemDot = ({
   const color = colors.status[status as keyof typeof colors.status] || colors.status.PENDING;
   const scale = isHovered ? 1.3 : 1;
   const dur = pulseDuration;
-  const bg = isDark ? "#1e293b" : "#ffffff";
+  // FIX: use colors.svg.dotBg instead of hardcoded value
+  // Dark: #0f172a (slate-900, distinct from slate-800 canvas)
+  // Light: #f8fafc (slate-50, distinct from white canvas)
+  const bg = colors.svg.dotBg;
 
   switch (status) {
     case "CONFIRMED":
@@ -762,17 +820,19 @@ const ItemDot = ({
 
 // ─── StatChip Component ────────────────────────────────────────
 const StatChip = ({
-  label, value, color = "text-slate-600 dark:text-slate-400",
-  bg = "bg-slate-100 dark:bg-slate-700/50", icon, pulse = false, blink = false,
+  label, value, color = "text-slate-700 dark:text-slate-200",
+  bg = "bg-slate-100 dark:bg-slate-700", icon, pulse = false, blink = false,
 }: {
   label: string; value: number; color?: string; bg?: string;
   icon?: string; pulse?: boolean; blink?: boolean;
 }) => (
   <span
-    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold ${bg} ${color} transition-all duration-200 hover:scale-105 cursor-default shadow-sm ${pulse ? "animate-pulse" : ""} ${blink ? "animate-blink" : ""}`}
+    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold ${bg} ${color} border border-slate-200/60 dark:border-slate-600/60 transition-all duration-200 hover:scale-105 cursor-default shadow-sm ${pulse ? "animate-pulse" : ""} ${blink ? "animate-blink" : ""}`}
     style={blink ? { animation: "blink 1.2s ease-in-out infinite" } : {}}>
     {icon && <span className="text-sm">{icon}</span>}
     <span>{label}</span>
-    <span className="font-bold tabular-nums px-1.5 py-0.5 rounded bg-white/60 dark:bg-white/10">{value}</span>
+    {/* FIX: value badge – dark:bg-white/10 was invisible,
+         now uses dark:bg-slate-900/60 for visible inset effect */}
+    <span className="font-bold tabular-nums px-1.5 py-0.5 rounded bg-white/70 dark:bg-slate-900/60 border border-slate-200/40 dark:border-slate-500/30">{value}</span>
   </span>
 );

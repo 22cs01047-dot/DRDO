@@ -38,6 +38,13 @@ class KeywordExtractor:
     DOMAIN_PATTERNS = [
         # System status patterns
         r'(fuel\s+pressure)',
+        r'(programmer\s+to)',
+        r'(controller\s+to)',
+        r'(director\s+to)',
+        r'(launch director\s+to)',
+        r'(test director\s+to)',
+        r'(range safety\s+to)',
+        r'(mission director\s+to)',
         r'(oxidizer\s+level)',
         r'(battery\s+voltage)',
         r'(telemetry\s+link)',

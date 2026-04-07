@@ -55,6 +55,7 @@ class PostProcessor:
         "nozzle bell": "nozzle",
         "umber lick": "umbilical",
         "umbilcal": "umbilical",
+        "prog": "programmer",
     }
 
     def __init__(

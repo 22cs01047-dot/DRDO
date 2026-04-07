@@ -36,7 +36,14 @@ whisper_prompt_terms:
   - "LOX"
   - "roger"
   - "wilco"
-  - "copy that"
+  - "programmer to"
+  - "controller"
+  - "director"
+  - "launch director"
+  - "test director"
+  - "range safety"
+  - "mission director"
+
 
 # Abbreviations and their expansions
 abbreviations:

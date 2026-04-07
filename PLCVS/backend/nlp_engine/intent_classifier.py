@@ -72,12 +72,15 @@ class IntentClassifier:
     QUESTION_PATTERNS = [
         r'\?$',
         r'\b(status|report|check|verify)\b.*\?',
+        r'\b(status|report|check|verify)\b.*\?',
         r'\b(what is|how is|is the|are the)\b',
         r'\b(requesting|request status)\b',
+        r'\b(programmer to |controller to |director to |launch director to |test director to |range safety to |mission director to )\b',
         r'\b(confirm|checking)\b.*\b(status|reading|level)\b',
         r'^report\b',  # "Report ..." as a command/query
         r'\b(report)\b.*\b(status|reading|alignment|level)\b',
     ]
+
 
     def __init__(self, semantic_matcher=None):
         """
